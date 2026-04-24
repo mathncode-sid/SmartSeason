@@ -1,0 +1,57 @@
+╔════════════════════════════════════════════════════════════════╗
+║     SmartSeason Field Monitoring System - QUICK START           ║
+╚════════════════════════════════════════════════════════════════╝
+
+STEP 1: Install Dependencies
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Open Command Prompt in SmartSeason folder and run:
+  setup.bat
+
+This will install all required Node packages for both backend and frontend.
+
+STEP 2: Run the Application
+━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Still in SmartSeason folder, run:
+  start.bat
+
+This starts both the backend server (port 5000) and frontend (port 3000).
+The application should automatically open in your browser.
+
+STEP 3: Login
+━━━━━━━━━━━━━
+Use one of these demo accounts:
+
+ADMIN (Can create fields, assign to agents):
+  Email: admin@smartseason.com
+  Password: password123
+
+AGENT (Can view assigned fields, add updates):
+  Email: agent@smartseason.com
+  Password: password123
+
+STEP 4: Test the System
+━━━━━━━━━━━━━━━━━━━━━━━
+1. Login as Admin
+2. Go to "Manage Fields"
+3. Click "+ Create Field" and add a test field
+4. Assign it to the Field Agent
+5. Logout and login as Agent
+6. You'll see the assigned field
+7. Click on it and add an update
+8. Login as Admin again to see the update
+
+═══════════════════════════════════════════════════════════════════════
+
+DOCUMENTATION:
+  README.md           - Complete documentation and architecture
+  SETUP.md            - Detailed setup guide
+  PROJECT_SUMMARY.md  - Project overview and statistics
+  SUBMISSION.md       - What's included and how it works
+
+LOCATIONS:
+  Backend API:  http://localhost:5000
+  Frontend:     http://localhost:3000
+
+Need help? See README.md for comprehensive documentation.
+
+═══════════════════════════════════════════════════════════════════════
