@@ -6,7 +6,7 @@
 1. Double-click `setup.bat` to install all dependencies
 2. Double-click `start.bat` to run both backend and frontend
 
-That's it! The application will open at `http://localhost:3000`
+That's it! The application will open at `http://localhost:3000`, and demo users are created automatically.
 
 ### Option 2: Manual Setup
 
@@ -22,6 +22,8 @@ npm start
 ```
 Backend will run on `http://localhost:5000`
 
+> **Note**: Demo users are created automatically on first run.
+
 #### Step 2: Frontend Setup (new terminal)
 ```
 cd frontend
@@ -33,7 +35,8 @@ Frontend will open automatically at `http://localhost:3000`
 ## After Installation
 
 ### Demo Users
-The system comes with pre-configured demo users:
+
+Demo users are automatically created when you start the backend for the first time.
 
 **Admin Account:**
 - Email: `admin@smartseason.com`
@@ -42,8 +45,6 @@ The system comes with pre-configured demo users:
 **Field Agent Account:**
 - Email: `agent@smartseason.com`
 - Password: `password123`
-
-These users are automatically created when you first start the backend.
 
 ### First Time Usage
 
@@ -149,4 +150,4 @@ For detailed API documentation and architecture decisions, see `README.md` in th
 
 ---
 
-Happy farming! 🌱
+Happy farming!

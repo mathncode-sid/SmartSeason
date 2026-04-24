@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const dbPath = path.join(__dirname, '../smartseason.db');
 
@@ -12,7 +13,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
 });
 
 // Initialize database schema
-const initializeDatabase = () => {
+const initializeDatabase = async () => {
   db.serialize(() => {
     // Users table
     db.run(`
@@ -68,9 +69,49 @@ const initializeDatabase = () => {
         FOREIGN KEY (field_id) REFERENCES fields(id) ON DELETE CASCADE,
         FOREIGN KEY (agent_id) REFERENCES users(id)
       )
-    `);
+    `, () => {
+      // After all tables are created, auto-seed demo users if they don't exist
+      seedDemoUsers();
+    });
 
     console.log('Database schema initialized successfully');
+  });
+};
+
+// Auto-seed demo users on first run
+const seedDemoUsers = () => {
+  db.get("SELECT id FROM users WHERE email = 'admin@smartseason.com'", async (err, row) => {
+    if (err) return;
+    
+    if (!row) {
+      // Demo users don't exist, create them
+      try {
+        const adminPassword = await bcrypt.hash('password123', 10);
+        const agentPassword = await bcrypt.hash('password123', 10);
+        
+        db.run(
+          "INSERT INTO users (email, password, first_name, last_name, role) VALUES (?, ?, ?, ?, ?)",
+          ['admin@smartseason.com', adminPassword, 'Admin', 'Coordinator', 'admin'],
+          function(err) {
+            if (!err) {
+              console.log('✓ Created demo admin user: admin@smartseason.com');
+            }
+          }
+        );
+        
+        db.run(
+          "INSERT INTO users (email, password, first_name, last_name, role) VALUES (?, ?, ?, ?, ?)",
+          ['agent@smartseason.com', agentPassword, 'Field', 'Agent', 'agent'],
+          function(err) {
+            if (!err) {
+              console.log('✓ Created demo agent user: agent@smartseason.com');
+            }
+          }
+        );
+      } catch (error) {
+        console.error('Error seeding demo users:', error);
+      }
+    }
   });
 };
 
