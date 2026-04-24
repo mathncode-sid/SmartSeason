@@ -40,7 +40,7 @@ const Navigation = () => {
       <div className="container">
         <div className="nav">
           <div>
-            <h1>🌱 SmartSeason</h1>
+            <h1>SmartSeason</h1>
             <p>Field Monitoring System</p>
           </div>
           <nav>

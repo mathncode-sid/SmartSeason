@@ -42,7 +42,7 @@ export default function AdminDashboard() {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <h2>Administrator Dashboard</h2>
         <button className="btn btn-primary" onClick={handleRefresh} disabled={loading}>
-          {loading ? '⟳ Refreshing...' : '⟳ Refresh'}
+          {loading ? 'Refreshing...' : 'Refresh'}
         </button>
       </div>
 

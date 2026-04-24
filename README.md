@@ -2,7 +2,7 @@
 
 A full-stack web application for tracking crop progress across multiple fields during a growing season. Built with Node.js/Express backend and React frontend, featuring role-based access control for administrators and field agents.
 
-## 🎯 Overview
+## Overview
 
 SmartSeason helps agricultural coordinators and field agents:
 - Track multiple fields throughout the growing season
@@ -11,7 +11,7 @@ SmartSeason helps agricultural coordinators and field agents:
 - Record observations and stage updates
 - Get real-time dashboards with field status overview
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend:** Node.js, Express.js, SQLite3
 - **Frontend:** React 18, React Router v6, Axios
@@ -40,7 +40,7 @@ FieldAssignments: id, field_id, agent_id, assigned_date
 FieldUpdates: id, field_id, agent_id, stage, notes, created_at
 ```
 
-## 🚀 Setup Instructions
+## Setup Instructions
 
 ### Prerequisites
 - Node.js 14+ and npm
@@ -91,7 +91,7 @@ Frontend runs on `http://localhost:3000`
 
 The database and schema are automatically created when the backend starts for the first time. The SQLite database file (`smartseason.db`) will be created in the `backend/` directory.
 
-## 📊 Design Decisions
+## Design Decisions
 
 ### 1. Field Status Calculation Logic
 Fields have a computed **status** that's determined by:
@@ -248,11 +248,11 @@ REACT_APP_API_URL=http://localhost:5000/api
 
 ## 📈 Field Status Examples
 
-1. **Field planted 10 days ago** → Planted stage → Expected: Planted → **Active** ✅
-2. **Field planted 40 days ago** → Still in Planted stage → Expected: Growing → **At Risk** ⚠️
-3. **Field planted 90 days ago** → Harvested → **Completed** ✓
+1. **Field planted 10 days ago** → Planted stage → Expected: Planted → **Active**
+2. **Field planted 40 days ago** → Still in Planted stage → Expected: Growing → **At Risk**
+3. **Field planted 90 days ago** → Harvested → **Completed**
 
-## 🚀 Deployment
+## Deployment
 
 ### For Production
 1. Build frontend: `cd frontend && npm run build`

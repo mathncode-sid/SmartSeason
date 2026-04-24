@@ -75,7 +75,7 @@ export default function FieldDetailsPage() {
           </div>
           <div style={{ display: 'flex', gap: '10px', alignItems: 'start' }}>
             <button className="btn btn-primary btn-small" onClick={handleRefreshField} disabled={loading}>
-              {loading ? '⟳' : '⟳'} Refresh
+              {loading ? '' : ''} Refresh
             </button>
             <span className={`badge badge-${field.status.toLowerCase().replace(' ', '-')}`} style={{ padding: '10px 15px', fontSize: '14px' }}>
               {field.status}
