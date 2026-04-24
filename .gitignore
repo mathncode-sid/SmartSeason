@@ -1,9 +1,50 @@
+# Git
 .git/
+
+# Dependencies
 node_modules/
-*.db
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
 .env.local
-.DS_Store
-npm-debug.log
-.vscode/
+.env.*.local
+.env.production.local
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Build output
 build/
 dist/
+.next/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Editor/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.eslintcache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+coverage/
+
+# Testing
+.nyc_output/
+coverage/

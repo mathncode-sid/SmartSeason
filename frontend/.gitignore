@@ -1,6 +1,38 @@
+# Dependencies
 node_modules/
+package-lock.json
+yarn.lock
+
+# Production build
 build/
+dist/
+.next/
+
+# Environment variables
+.env
 .env.local
-.DS_Store
-npm-debug.log
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Editor/IDE
 .vscode/
+.idea/
+*.swp
+*.swo
+*~
+.eslintcache
+.prettierignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+.eslintcache
