@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { dashboardAPI, fieldsAPI } from '../utils/api';
+import { dashboardAPI } from '../utils/api';
 
 export default function AdminDashboard() {
   const [dashboard, setDashboard] = useState(null);

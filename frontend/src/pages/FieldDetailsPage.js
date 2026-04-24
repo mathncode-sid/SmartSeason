@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fieldsAPI, updatesAPI } from '../utils/api';
 import { useAuth } from '../context/AuthContext';
@@ -17,11 +17,7 @@ export default function FieldDetailsPage() {
     notes: ''
   });
 
-  useEffect(() => {
-    fetchFieldData();
-  }, [id]);
-
-  const fetchFieldData = async () => {
+  const fetchFieldData = useCallback(async () => {
     try {
       setLoading(true);
       const fieldRes = await fieldsAPI.getById(id);
@@ -35,7 +31,13 @@ export default function FieldDetailsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
+
+  useEffect(() => {
+    fetchFieldData();
+  }, [fetchFieldData]);
+
+
 
   const handleAddUpdate = async (e) => {
     e.preventDefault();
