@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import './styles/global.css';
 
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminDashboard from './pages/AdminDashboard';
@@ -82,48 +83,53 @@ function App() {
   return (
     <BrowserRouter>
       <Navigation />
-      <div className="container">
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+      <Routes>
+        <Route path="/" element={user ? <Navigate to={user.role === 'admin' ? '/admin-dashboard' : '/agent-dashboard'} /> : <LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-          <Route
-            path="/admin-dashboard"
-            element={
-              <ProtectedRoute requiredRole="admin">
+        <Route
+          path="/admin-dashboard"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <div className="container">
                 <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/manage-fields"
-            element={
-              <ProtectedRoute requiredRole="admin">
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/manage-fields"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <div className="container">
                 <ManageFieldsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/field/:id"
-            element={
-              <ProtectedRoute>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/field/:id"
+          element={
+            <ProtectedRoute>
+              <div className="container">
                 <FieldDetailsPage />
-              </ProtectedRoute>
-            }
-          />
+              </div>
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/agent-dashboard"
-            element={
-              <ProtectedRoute requiredRole="agent">
+        <Route
+          path="/agent-dashboard"
+          element={
+            <ProtectedRoute requiredRole="agent">
+              <div className="container">
                 <AgentDashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route path="/" element={user ? <Navigate to={user.role === 'admin' ? '/admin-dashboard' : '/agent-dashboard'} /> : <Navigate to="/login" />} />
-        </Routes>
-      </div>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
