@@ -242,9 +242,9 @@ All functionality has been tested:
 ## Deployment Ready
 
 The system can be deployed to:
-- **Heroku** (backend)
-- **Vercel** (frontend)
+- **Vercel + Render** (frontend + backend, free tier available)
 - **AWS** (backend + frontend)
+- **DigitalOcean** (backend + frontend)
 - **Docker** (containerized deployment)
 - **Traditional VPS** (Node.js hosting)
 

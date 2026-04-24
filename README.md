@@ -254,18 +254,64 @@ REACT_APP_API_URL=http://localhost:5000/api
 
 ## Deployment
 
-### For Production
-1. Build frontend: `cd frontend && npm run build`
-2. Serve frontend from backend as static files (or use separate hosting)
-3. Change JWT_SECRET to a secure random key
-4. Switch to PostgreSQL database
-5. Add HTTPS, proper CORS configuration
-6. Add rate limiting and request validation
+SmartSeason is ready for production deployment. Choose your platform:
 
-### Heroku/Vercel Deployment
-- Backend can deploy to Heroku with Procfile
-- Frontend can deploy to Vercel
-- Update API URL in frontend environment variables
+### Vercel + Render (Free Tier - No Payment Required)
+
+Perfect for getting your app live without a payment method.
+
+Deploy frontend on **Vercel** (free), backend on **Render** (free with limits):
+
+**Quick Start (15 min):**
+1. Frontend: Deploy to Vercel from GitHub (automatic, no config)
+2. Backend: Deploy to Render from GitHub + PostgreSQL database
+3. Connect: Update frontend API URL
+4. Seed: Initialize database with demo users
+
+**Full Instructions:** See `VERCEL_RENDER_QUICK_START.md` (quick) or `VERCEL_RENDER_DEPLOYMENT.md` (detailed)
+
+**Advantages:**
+- ✅ Completely free tier available
+- ✅ No payment method required
+- ✅ Automatic deployments from GitHub
+- ✅ PostgreSQL database included
+- ✅ Global CDN for frontend
+
+**Limitations:**
+- Render free tier: Cold start after 15 min inactivity (30s first request)
+- Database size limited on free tier
+- For production traffic, consider paid upgrades
+
+### Local Production Testing
+
+Test the production setup locally:
+```bash
+npm run build --prefix frontend
+PORT=5000 npm start
+# Visit http://localhost:5000
+```
+
+### Manual Deployment
+
+For custom servers (AWS EC2, DigitalOcean VPS, etc.):
+
+1. **Install Node.js** on your server
+2. **Clone repository**: `git clone <repo>`
+3. **Install dependencies**: `npm install && npm install --prefix backend && npm install --prefix frontend`
+4. **Build frontend**: `npm run build --prefix frontend`
+5. **Set environment variables** (.env files):
+   - Backend: `JWT_SECRET`, `NODE_ENV=production`
+   - Frontend: `REACT_APP_API_URL=https://your-domain.com/api`
+6. **Database**: Set up PostgreSQL and configure `DATABASE_URL`
+7. **Start server**: `npm start`
+8. **Setup reverse proxy**: Configure nginx/Apache to forward requests
+9. **Enable HTTPS**: Use Let's Encrypt for SSL certificates
+
+### Platform-Specific Guides
+
+- **Vercel + Render**: `VERCEL_RENDER_QUICK_START.md` (free option)
+- **AWS EC2**: Set up Node.js, PostgreSQL, nginx with reverse proxy
+- **DigitalOcean**: App Platform or VPS with similar setup to AWS
 
 ## 📝 Key Assumptions
 
