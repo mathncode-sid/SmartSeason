@@ -54,6 +54,11 @@ export default function FieldDetailsPage() {
   if (error) return <div className="alert alert-error">{error}</div>;
   if (!field) return <div className="alert alert-error">Field not found</div>;
 
+  const handleRefreshField = () => {
+    setLoading(true);
+    fetchFieldData();
+  };
+
   const daysOld = Math.floor((new Date() - new Date(field.planting_date)) / (1000 * 60 * 60 * 24));
 
   return (
@@ -68,9 +73,14 @@ export default function FieldDetailsPage() {
             <h2>{field.name}</h2>
             <p style={{ color: '#6c757d', marginBottom: '20px' }}>Crop: {field.crop_type}</p>
           </div>
-          <span className={`badge badge-${field.status.toLowerCase().replace(' ', '-')}`} style={{ padding: '10px 15px', fontSize: '14px' }}>
-            {field.status}
-          </span>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'start' }}>
+            <button className="btn btn-primary btn-small" onClick={handleRefreshField} disabled={loading}>
+              {loading ? '⟳' : '⟳'} Refresh
+            </button>
+            <span className={`badge badge-${field.status.toLowerCase().replace(' ', '-')}`} style={{ padding: '10px 15px', fontSize: '14px' }}>
+              {field.status}
+            </span>
+          </div>
         </div>
 
         <div className="dashboard-grid" style={{ marginBottom: '20px' }}>

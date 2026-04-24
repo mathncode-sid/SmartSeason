@@ -27,6 +27,10 @@ export default function AdminDashboard() {
   if (error) return <div className="alert alert-error">{error}</div>;
   if (!dashboard) return null;
 
+  const handleRefresh = () => {
+    fetchDashboard();
+  };
+
   const statusPercentages = {
     active: dashboard.totalFields > 0 ? Math.round((dashboard.fieldsByStatus.active / dashboard.totalFields) * 100) : 0,
     atRisk: dashboard.totalFields > 0 ? Math.round((dashboard.fieldsByStatus.atRisk / dashboard.totalFields) * 100) : 0,
@@ -35,7 +39,12 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: '30px' }}>Administrator Dashboard</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <h2>Administrator Dashboard</h2>
+        <button className="btn btn-primary" onClick={handleRefresh} disabled={loading}>
+          {loading ? '⟳ Refreshing...' : '⟳ Refresh'}
+        </button>
+      </div>
 
       {/* Summary Cards */}
       <div className="dashboard-grid">

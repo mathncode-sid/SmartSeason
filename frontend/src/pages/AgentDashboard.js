@@ -27,6 +27,10 @@ export default function AgentDashboard() {
   if (error) return <div className="alert alert-error">{error}</div>;
   if (!dashboard) return null;
 
+  const handleRefresh = () => {
+    fetchDashboard();
+  };
+
   const statusPercentages = {
     active: dashboard.totalAssignedFields > 0 ? Math.round((dashboard.fieldsByStatus.active / dashboard.totalAssignedFields) * 100) : 0,
     atRisk: dashboard.totalAssignedFields > 0 ? Math.round((dashboard.fieldsByStatus.atRisk / dashboard.totalAssignedFields) * 100) : 0,
@@ -35,7 +39,12 @@ export default function AgentDashboard() {
 
   return (
     <div>
-      <h2 style={{ marginBottom: '30px' }}>My Fields</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+        <h2>My Fields</h2>
+        <button className="btn btn-primary" onClick={handleRefresh} disabled={loading}>
+          {loading ? '⟳ Refreshing...' : '⟳ Refresh'}
+        </button>
+      </div>
 
       {/* Summary Cards */}
       <div className="dashboard-grid">
