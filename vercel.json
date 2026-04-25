@@ -1,0 +1,18 @@
+{
+  "buildCommand": "npm run build-all",
+  "outputDirectory": "frontend/build",
+  "env": {
+    "NODE_ENV": "production",
+    "REACT_APP_API_URL": "@vercel_api_url"
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
