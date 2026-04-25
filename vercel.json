@@ -1,20 +1,3 @@
 {
-  "env": {
-    "NODE_ENV": "production",
-    "REACT_APP_API_URL": "/_/backend"
-  },
-  "experimentalServices": {
-    "frontend": {
-      "entrypoint": "frontend",
-      "buildCommand": "npm run build",
-      "routePrefix": "/",
-      "framework": "create-react-app"
-    },
-    "backend": {
-      "entrypoint": "backend",
-      "buildCommand": "npm install",
-      "serverlessFunctionZipSize": 52428800,
-      "routePrefix": "/_/backend"
-    }
-  }
+  "buildCommand": "npm install && npm run build --prefix frontend"
 }
