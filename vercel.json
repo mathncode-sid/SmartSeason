@@ -1,28 +1,20 @@
 {
-  "buildCommand": "npm run build-all",
-  "outputDirectory": "frontend/build",
   "env": {
     "NODE_ENV": "production",
     "REACT_APP_API_URL": "/_/backend"
   },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "experimentalServices": {
     "frontend": {
       "entrypoint": "frontend",
+      "buildCommand": "npm run build",
+      "outputDirectory": "build",
       "routePrefix": "/",
       "framework": "create-react-app"
     },
     "backend": {
       "entrypoint": "backend",
+      "buildCommand": "npm install",
+      "serverlessFunctionZipSize": 52428800,
       "routePrefix": "/_/backend"
     }
   }
