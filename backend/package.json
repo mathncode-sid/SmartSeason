@@ -4,9 +4,9 @@
   "description": "SmartSeason Field Monitoring System Backend",
   "main": "src/index.js",
   "scripts": {
-    "build-all": "npm run build --prefix frontend && npm run build --prefix backend",
-    "build": "npm run build --prefix frontend",
-    "start": "node backend/src/index.js"
+    "build": "echo Backend ready",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "dependencies": {
     "@libsql/client": "^0.17.3",
