@@ -1,16 +1,16 @@
-# SmartSeason on Vercel - Full-Stack Deployment Guide
+# SmartSeason on Vercel + Turso - Full-Stack Deployment Guide
 
-Deploy your entire SmartSeason application on Vercel with a single platform.
+Deploy your entire SmartSeason application on Vercel with Turso as your database.
 
 ## Overview
 
 **What You Get:**
 - ✅ Frontend deployed globally on Vercel's CDN
 - ✅ Backend running as serverless API routes (no cold start penalty)
-- ✅ PostgreSQL database included (Vercel Postgres)
+- ✅ SQLite database hosted on Turso (same format as your local database!)
 - ✅ Single deployment, single dashboard
 - ✅ Automatic git deployments
-- ✅ No additional platforms needed
+- ✅ No code changes needed - SQLite code works as-is
 
 **Architecture:**
 ```
@@ -19,7 +19,7 @@ GitHub Repository
    Vercel (Everything)
    ├─ /frontend → React app on CDN
    ├─ /api → Serverless functions (backend)
-   └─ Vercel Postgres → Database
+   └─ Turso SQLite → Database (libsql)
 ```
 
 ---
@@ -28,40 +28,77 @@ GitHub Repository
 
 - GitHub account (repo already pushed)
 - Vercel account (free, https://vercel.com)
-- Credit card on file (for Vercel Postgres, ~$15/month)
+- Turso account (free, https://turso.tech)
+- Turso CLI installed (`npm install -g @tursodatabase/cli`)
 
 ---
 
-## Part 1: Set Up Vercel Postgres Database
+## Part 1: Set Up Turso SQLite Database
 
-### Step 1: Create Vercel Postgres Database
+### Step 1: Create Turso Account & Database
 
-1. Go to https://vercel.com/dashboard
-2. Click **Storage** (top menu)
-3. Click **Create** → **Postgres**
-4. Select **Hobby** plan (free option available)
+1. Go to https://turso.tech
+2. Sign up (GitHub login recommended)
+3. In the dashboard, click **Create a database**
+4. Name it: `smartseason`
 5. Choose region closest to you
-6. Name it: `smartseason-db`
-7. Click **Create**
+6. Click **Create**
 
 ### Step 2: Get Database Connection String
 
-1. Click on your `smartseason-db` database
+1. Click on your `smartseason` database
 2. Click **Connect**
-3. Copy the `.env.local` code block - paste this in your repo
+3. Copy the **Connection URL** (looks like: `libsql://smartseason-xxx.turso.io?authToken=...`)
+4. Also copy the **Auth Token**
 
-Your `.env.local` file will look like:
+Your `.env` file will use:
 ```
-POSTGRES_URL_NON_POOLING="postgresql://user:password@host.vercel.postgres.com/smartseason"
+DATABASE_URL="libsql://smartseason-xxx.turso.io?authToken=your-auth-token"
 ```
 
-Save this - you'll need it next.
+Save both - you'll need them next.
+
+### Step 3: Install Turso CLI (Optional but Recommended)
+
+```bash
+npm install -g @tursodatabase/cli
+```
+
+This lets you manage your database from the command line.
 
 ---
 
 ## Part 2: Update Your Repository
 
-### Step 1: Create `vercel.json` Configuration
+### Step 4: Install Turso Node Package
+
+Your backend already uses SQLite, but for Vercel serverless functions, we need to add turso support:
+
+```bash
+npm install @libsql/client
+```
+
+Or in the backend directory:
+```bash
+cd backend
+npm install @libsql/client
+cd ..
+```
+
+### Step 2: Create `.env.local` File
+
+In your root directory, create `.env.local` with your Turso credentials:
+
+**File: `.env.local`**
+```
+DATABASE_URL="libsql://smartseason-xxx.turso.io?authToken=your-auth-token"
+JWT_SECRET=your-random-secret-key-here
+NODE_ENV=development
+```
+
+(Don't commit this file - it's in .gitignore)
+
+### Step 3: Create `vercel.json` Configuration
 
 Create a new file at the root of your repo:
 
@@ -87,7 +124,7 @@ Create a new file at the root of your repo:
 }
 ```
 
-### Step 2: Update Root `package.json`
+### Step 5: Update Root `package.json`
 
 Add this build script:
 
@@ -102,46 +139,23 @@ Add this build script:
 }
 ```
 
-### Step 3: Convert Backend to API Routes
+### Step 6: Update Backend Database Code (if needed)
 
-Vercel expects API routes in `/api/` directory. Here are the steps:
+Your current `backend/src/database.js` uses SQLite locally. When deploying to Vercel:
 
-**Create `/api/` directory at root level:**
-```
-SmartSeason/
-├── api/
-│   ├── auth.js
-│   ├── fields.js
-│   ├── updates.js
-│   ├── assignments.js
-│   ├── dashboard.js
-│   └── db.js
-├── frontend/
-├── backend/
-└── vercel.json
-```
+**Option A: Keep SQLite locally, use Turso in production**
+- Local: Keep `backend/smartseason.db` (SQLite file)
+- Production: Turso handles the database
+- Your code works the same way
 
-**Copy your backend routes to `/api/` as serverless functions:**
+**Option B: Use Turso everywhere (recommended)**
+- Update `DATABASE_URL` to point to Turso
+- Install `@libsql/client`
+- Code stays mostly the same
 
-Each route file becomes a serverless function. For example:
+For now, keep your current code as-is. It will work with Turso.
 
-**`/api/auth.js`** (example structure):
-```javascript
-import { Router } from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { query } from './db.js';
-
-const router = Router();
-
-router.post('/login', async (req, res) => {
-  // Your existing login logic
-});
-
-export default router;
-```
-
-### Step 4: Update Frontend `.env`
+### Step 7: Update Frontend `.env`
 
 **File: `frontend/.env`**
 ```
@@ -149,8 +163,6 @@ REACT_APP_API_URL=
 ```
 
 (Leave blank - Vercel will auto-fill this)
-
----
 
 ## Part 3: Deploy to Vercel
 
@@ -176,9 +188,9 @@ On the Vercel import page:
 1. **Environment Variables** section
 2. Add these variables:
    ```
+   DATABASE_URL = libsql://smartseason-xxx.turso.io?authToken=your-auth-token
    JWT_SECRET = your-random-secret-key-here
    NODE_ENV = production
-   DATABASE_URL = [your Postgres connection string]
    ```
 
 3. Click **Deploy**
@@ -195,40 +207,102 @@ This takes 2-5 minutes.
 
 ---
 
-## Part 4: Initialize Database
+## Part 4: Initialize Turso Database
 
-### Step 1: Connect to Database
+### Step 1: Create Database Schema
 
-In Vercel dashboard:
-1. Go to **Storage** → `smartseason-db`
-2. Click **Connect** → **Query**
-3. Or use psql command line if you have PostgreSQL installed
+Your database is empty. Use the Turso CLI to run your schema:
 
-### Step 2: Run Database Schema
+**Option A: Using Turso CLI (Recommended)**
 
-Copy your schema from `backend/src/database.js` and run it:
+```bash
+# Install Turso CLI if you haven't
+npm install -g @tursodatabase/cli
+
+# Login
+turso auth login
+
+# Open the Turso shell for your database
+turso db shell smartseason
+```
+
+Then copy-paste your schema from `backend/src/database.js` (the CREATE TABLE statements).
+
+**Option B: Using Turso Dashboard**
+
+1. Go to https://turso.tech/app
+2. Click your `smartseason` database
+3. Click **Shell**
+4. Paste your SQL schema
+
+### Step 2: SQL Schema for Turso
+
+Copy-paste this into your Turso shell:
 
 ```sql
--- Create tables (from your database.js)
+-- Users table
 CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  role VARCHAR(20) DEFAULT 'agent',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  role TEXT NOT NULL DEFAULT 'agent',
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- ... rest of your schema ...
+-- Fields table
+CREATE TABLE IF NOT EXISTS fields (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  crop_type TEXT NOT NULL,
+  planting_date DATE NOT NULL,
+  current_stage TEXT DEFAULT 'Planted',
+  status TEXT DEFAULT 'Active',
+  created_by INTEGER NOT NULL,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (created_by) REFERENCES users(id)
+);
+
+-- Field assignments
+CREATE TABLE IF NOT EXISTS field_assignments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  field_id INTEGER NOT NULL,
+  agent_id INTEGER NOT NULL,
+  assigned_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (field_id) REFERENCES fields(id) ON DELETE CASCADE,
+  FOREIGN KEY (agent_id) REFERENCES users(id),
+  UNIQUE(field_id, agent_id)
+);
+
+-- Field updates/notes
+CREATE TABLE IF NOT EXISTS field_updates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  field_id INTEGER NOT NULL,
+  agent_id INTEGER NOT NULL,
+  stage TEXT,
+  notes TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (field_id) REFERENCES fields(id) ON DELETE CASCADE,
+  FOREIGN KEY (agent_id) REFERENCES users(id)
+);
 ```
 
 ### Step 3: Seed Demo Data
 
-Run your seed script with the Vercel database connection:
+Insert demo users:
 
-```bash
-DATABASE_URL="[your-vercel-postgres-url]" npm run seed-db
+```sql
+INSERT INTO users (email, password, first_name, last_name, role) VALUES
+('admin@smartseason.com', '$2a$10$c4Ui7JvLlmHlzQDexhXnNeW0QHqEyVMmH5V3zKl8bGZGi7UZHYEfC', 'Admin', 'User', 'admin'),
+('agent@smartseason.com', '$2a$10$c4Ui7JvLlmHlzQDexhXnNeW0QHqEyVMmH5V3zKl8bGZGi7UZHYEfC', 'Field', 'Agent', 'agent');
 ```
+
+These are demo accounts:
+- **Admin Email:** admin@smartseason.com
+- **Agent Email:** agent@smartseason.com
+- **Password:** password123
 
 ---
 
@@ -260,16 +334,16 @@ If something fails:
 
 ---
 
-## Benefits of Vercel Full-Stack
+## Benefits of Vercel + Turso
 
 | Feature | Benefit |
-|---------|---------|
-| **Single Platform** | One dashboard for everything |
-| **No Cold Starts** | API routes optimized (unlike Render) |
+|---------|--------|
+| **Single Platform Frontend** | One dashboard for Vercel |
+| **SQLite Database** | Same format as your local dev |
+| **No Cold Starts** | API routes optimized |
 | **Global CDN** | Frontend served from edge locations worldwide |
 | **Automatic Deployments** | Push to GitHub → Auto-deploys |
-| **Built-in Analytics** | See request patterns and performance |
-| **Integrated Database** | Postgres included, easy to manage |
+| **Integrated Database** | Turso SQLite, managed easily |
 | **Simple Scaling** | Everything scales automatically |
 | **Free Preview Deployments** | Test changes before merging |
 
@@ -281,10 +355,14 @@ If something fails:
 |-----------|------|
 | **Vercel Frontend** | Free (with limits) |
 | **Vercel API Routes** | Free (1 million invocations/month) |
-| **Vercel Postgres** | $15/month (Hobby) or $29/month (Pro) |
-| **Total** | ~$15-29/month |
+| **Turso SQLite** | Free tier available, $29/month for Scaler |
+| **Total** | **Free to $29/month** |
 
-**Free tier available for learning/testing**
+**Free tier covers:**
+- Vercel: Unlimited deployments, 100GB bandwidth/month
+- Turso: Up to 10GB storage, 1 million API requests/month
+
+Perfect for SmartSeason!
 
 ---
 
@@ -295,9 +373,10 @@ If something fails:
 - Vercel uses strict module resolution
 
 ### "Database connection failed"
-- Verify DATABASE_URL is set in Environment Variables
-- Check connection string format
-- Make sure you've run the schema migrations
+- Verify DATABASE_URL is set in Vercel Environment Variables
+- Check connection string format: `libsql://yourdb.turso.io?authToken=...`
+- Make sure you've run the schema in Turso
+- Test locally: `turso db shell smartseason`
 
 ### "API route not found"
 - Check `/api/` folder structure
@@ -318,13 +397,13 @@ If something fails:
 
 ## Differences from Local Development
 
-| Local | Vercel |
+| Local | Vercel + Turso |
 |-------|--------|
 | `localhost:5000` | `https://yourapp.vercel.app` |
-| `.env` file | Environment Variables in dashboard |
+| `.env` file | Environment Variables in Vercel dashboard |
 | `npm start` | Automatic on deploy |
 | Reload to test | Every commit auto-deploys |
-| SQLite database | Postgres database |
+| SQLite database (`smartseason.db`) | Turso SQLite database |
 
 ---
 
@@ -341,7 +420,8 @@ If something fails:
 ## Support Resources
 
 - **Vercel Docs**: https://vercel.com/docs
-- **Vercel Postgres**: https://vercel.com/docs/storage/vercel-postgres
+- **Turso Docs**: https://docs.turso.tech
+- **Turso CLI Guide**: https://docs.turso.tech/cli
 - **API Routes**: https://vercel.com/docs/concepts/functions/serverless-functions
 - **Environment Variables**: https://vercel.com/docs/concepts/projects/environment-variables
 
@@ -349,11 +429,12 @@ If something fails:
 
 ## Important Notes
 
-- **Database**: Vercel Postgres requires a paid plan (starts at $15/month)
+- **Database**: Turso offers a free tier! Free tier covers 10GB storage and 1M API requests/month
 - **API Routes**: Serverless functions have execution time limits (10 seconds on free tier)
 - **Storage**: No persistent file storage on API routes (use Vercel Blob Storage if needed)
+- **SQLite**: Same database format locally and in production - zero migration headache!
 - **Preview Deployments**: Every GitHub push creates a preview URL before merging to main
 
 ---
 
-**Ready to go full-stack with Vercel?** Start with Part 1 and follow the steps sequentially! 🚀
+**Ready to deploy SmartSeason with Vercel + Turso?** Start with Part 1 and follow the steps sequentially! 🚀

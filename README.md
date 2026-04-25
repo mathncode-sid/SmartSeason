@@ -115,7 +115,7 @@ SQLite was chosen for:
 - Portable (single file database)
 - Easy deployment
 
-For production, would migrate to PostgreSQL for concurrent access and scalability.
+For production, uses **Turso** SQLite for cloud database with the same table schema.
 
 ### 4. Authentication
 - JWT tokens stored in localStorage
@@ -256,17 +256,17 @@ REACT_APP_API_URL=http://localhost:5000/api
 
 SmartSeason is ready for production deployment on **Vercel**.
 
-### Vercel Full-Stack (Recommended - Single Platform)
+### Vercel + Turso Full-Stack (Recommended - Single Platform)
 
-Deploy your entire application on Vercel with:
+Deploy your entire application on Vercel with Turso SQLite:
 - ✅ React frontend on global CDN
 - ✅ Backend as serverless API routes
-- ✅ PostgreSQL database included
+- ✅ Turso SQLite database (same format as your local database!)
 - ✅ Automatic GitHub deployments
 - ✅ Single dashboard
 
 **Quick Start (20 min):**
-1. Create Vercel Postgres database
+1. Create Turso SQLite database
 2. Push code to GitHub with Vercel configuration
 3. Import repo to Vercel
 4. Set environment variables
@@ -276,15 +276,17 @@ Deploy your entire application on Vercel with:
 
 **Cost:**
 - Frontend & API Routes: Free tier available
-- PostgreSQL Database: ~$15/month (Hobby plan)
+- Turso SQLite: Free tier available (10GB storage, 1M requests/month)
+- **Total: Completely free to start!**
 
-**Why Vercel?**
+**Why Vercel + Turso?**
 - ✅ Single platform, single dashboard
 - ✅ No cold starts with serverless functions
 - ✅ Global CDN for frontend
 - ✅ Serverless API routes included
-- ✅ Integrated database options
+- ✅ SQLite database (zero migration from local)
 - ✅ Automatic deployments from GitHub
+- ✅ Free tier covers all features
 
 ### Local Production Testing
 
@@ -306,7 +308,7 @@ For custom servers (AWS EC2, DigitalOcean VPS, etc.):
 5. **Set environment variables** (.env files):
    - Backend: `JWT_SECRET`, `NODE_ENV=production`
    - Frontend: `REACT_APP_API_URL=https://your-domain.com/api`
-6. **Database**: Set up PostgreSQL and configure `DATABASE_URL`
+6. **Database**: Set up Turso SQLite and configure `DATABASE_URL` with libsql connection
 7. **Start server**: `npm start`
 8. **Setup reverse proxy**: Configure nginx/Apache to forward requests
 9. **Enable HTTPS**: Use Let's Encrypt for SSL certificates
@@ -314,7 +316,7 @@ For custom servers (AWS EC2, DigitalOcean VPS, etc.):
 ### Platform-Specific Guides
 
 - **Vercel**: `VERCEL_FULLSTACK_DEPLOYMENT.md` (recommended)
-- **AWS EC2**: Set up Node.js, PostgreSQL, nginx with reverse proxy
+- **AWS EC2**: Set up Node.js, SQLite/PostgreSQL, nginx with reverse proxy
 - **DigitalOcean**: App Platform or VPS with similar setup to AWS
 
 ## 📝 Key Assumptions

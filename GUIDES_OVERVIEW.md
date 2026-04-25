@@ -88,13 +88,12 @@ SmartSeason/
 
 ## Key Information Summary
 
-### Vercel Full-Stack (RECOMMENDED)
-- **Cost**: ~$15/month (Postgres database)
+- **Cost**: Free tier available (~$29/month for Scaler plan)
 - **Setup**: 20 minutes
-- **Payment**: Yes, required for database
-- **Best for**: Most applications, simplicity, single platform
+- **Payment**: No payment needed to start (free tier)
+- **Best for**: Most applications, simplicity, single platform, SQLite compatibility
 - **Start**: `VERCEL_FULLSTACK_DEPLOYMENT.md`
-- **Why**: Single dashboard, no cold starts, global CDN, serverless API routes
+- **Why**: Single dashboard, no cold starts, global CDN, SQLite (same as local dev)
 
 ---
 
@@ -126,8 +125,8 @@ SmartSeason/
 
 ## Next Steps
 
-1. **Ensure code is ready** (frontend builds, no errors)
-2. **Create Vercel Postgres database** (Part 1)
+1. Ensure code is ready (frontend builds, no errors)
+2. **Create Turso SQLite database** (Part 1)
 3. **Update your repository** (Part 2)
 4. **Deploy to Vercel** (Part 3)
 5. **Set up database** (Part 4)
