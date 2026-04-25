@@ -3,7 +3,7 @@
   "outputDirectory": "frontend/build",
   "env": {
     "NODE_ENV": "production",
-    "REACT_APP_API_URL": "@vercel_api_url"
+    "REACT_APP_API_URL": "/_/backend"
   },
   "rewrites": [
     {
