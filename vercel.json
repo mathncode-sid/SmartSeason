@@ -7,7 +7,6 @@
     "frontend": {
       "entrypoint": "frontend",
       "buildCommand": "npm run build",
-      "outputDirectory": "build",
       "routePrefix": "/",
       "framework": "create-react-app"
     },
