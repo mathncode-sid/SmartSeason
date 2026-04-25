@@ -254,33 +254,37 @@ REACT_APP_API_URL=http://localhost:5000/api
 
 ## Deployment
 
-SmartSeason is ready for production deployment. Choose your platform:
+SmartSeason is ready for production deployment on **Vercel**.
 
-### Vercel + Render (Free Tier - No Payment Required)
+### Vercel Full-Stack (Recommended - Single Platform)
 
-Perfect for getting your app live without a payment method.
-
-Deploy frontend on **Vercel** (free), backend on **Render** (free with limits):
-
-**Quick Start (15 min):**
-1. Frontend: Deploy to Vercel from GitHub (automatic, no config)
-2. Backend: Deploy to Render from GitHub + PostgreSQL database
-3. Connect: Update frontend API URL
-4. Seed: Initialize database with demo users
-
-**Full Instructions:** See `VERCEL_RENDER_QUICK_START.md` (quick) or `VERCEL_RENDER_DEPLOYMENT.md` (detailed)
-
-**Advantages:**
-- ✅ Completely free tier available
-- ✅ No payment method required
-- ✅ Automatic deployments from GitHub
+Deploy your entire application on Vercel with:
+- ✅ React frontend on global CDN
+- ✅ Backend as serverless API routes
 - ✅ PostgreSQL database included
-- ✅ Global CDN for frontend
+- ✅ Automatic GitHub deployments
+- ✅ Single dashboard
 
-**Limitations:**
-- Render free tier: Cold start after 15 min inactivity (30s first request)
-- Database size limited on free tier
-- For production traffic, consider paid upgrades
+**Quick Start (20 min):**
+1. Create Vercel Postgres database
+2. Push code to GitHub with Vercel configuration
+3. Import repo to Vercel
+4. Set environment variables
+5. Deploy and seed database
+
+**Full Instructions:** See `VERCEL_FULLSTACK_DEPLOYMENT.md`
+
+**Cost:**
+- Frontend & API Routes: Free tier available
+- PostgreSQL Database: ~$15/month (Hobby plan)
+
+**Why Vercel?**
+- ✅ Single platform, single dashboard
+- ✅ No cold starts with serverless functions
+- ✅ Global CDN for frontend
+- ✅ Serverless API routes included
+- ✅ Integrated database options
+- ✅ Automatic deployments from GitHub
 
 ### Local Production Testing
 
@@ -309,7 +313,7 @@ For custom servers (AWS EC2, DigitalOcean VPS, etc.):
 
 ### Platform-Specific Guides
 
-- **Vercel + Render**: `VERCEL_RENDER_QUICK_START.md` (free option)
+- **Vercel**: `VERCEL_FULLSTACK_DEPLOYMENT.md` (recommended)
 - **AWS EC2**: Set up Node.js, PostgreSQL, nginx with reverse proxy
 - **DigitalOcean**: App Platform or VPS with similar setup to AWS
 
